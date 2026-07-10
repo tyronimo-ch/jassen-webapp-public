@@ -44,7 +44,7 @@ override the defaults. The client version shown in the start-page footer comes f
 ## License
 This project follows a dual-licensing model to separate the application logic from the creative media assets:
 
-* **Source Code:** The source code of this web application is licensed under the [GNU General Public License v3 (GPLv3)](LICENSE).
+* **Source Code:** The source code of this web application is licensed under the [GNU General Public License v3 (GPLv3)](LICENSE.md).
 * **Card artwork:** All images used within this application are strictly excluded from the GPLv3 and are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) license. 
 
 ### Commercial Use Notice
