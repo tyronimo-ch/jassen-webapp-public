@@ -53,6 +53,17 @@ function renderWithLinks(text: string): ReactNode[] {
   return nodes;
 }
 
+// Shared style for the footer's text-link buttons.
+const linkButtonStyle = {
+  background: "none",
+  border: "none",
+  padding: 0,
+  font: "inherit",
+  cursor: "pointer",
+  color: "var(--gold-bright)",
+  textDecoration: "underline",
+} as const;
+
 // Modal overlay layout template
 function InfoOverlay({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
@@ -125,7 +136,7 @@ export default function Footer() {
           <button
             type="button"
             onClick={() => setShowCredits(true)}
-            style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer", color: "var(--gold-bright)", textDecoration: "underline" }}
+            style={linkButtonStyle}
           >
             Credits
           </button>
@@ -133,7 +144,7 @@ export default function Footer() {
           <button
             type="button"
             onClick={() => setShowLicense(true)}
-            style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer", color: "var(--gold-bright)", textDecoration: "underline" }}
+            style={linkButtonStyle}
           >
             Lizenz
           </button>
@@ -145,7 +156,7 @@ export default function Footer() {
               <button
                 type="button"
                 onClick={() => setShowDatenschutz(true)}
-                style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer", color: "var(--gold-bright)", textDecoration: "underline" }}
+                style={linkButtonStyle}
               >
                 Datenschutz
               </button>
@@ -159,7 +170,7 @@ export default function Footer() {
               <button
                 type="button"
                 onClick={() => setShowSonstiges(true)}
-                style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer", color: "var(--gold-bright)", textDecoration: "underline" }}
+                style={linkButtonStyle}
               >
                 Sonstiges
               </button>

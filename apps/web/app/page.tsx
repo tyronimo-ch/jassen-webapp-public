@@ -1,5 +1,7 @@
 "use client";
 import {
+  BIETER_DEFAULT_PENALTY,
+  BIETER_PENALTY_OPTIONS,
   DIFFERENZLER_ROUND_OPTIONS,
   PANDUR_DEFAULT_TARGET,
   PANDUR_TARGET_OPTIONS,
@@ -34,6 +36,7 @@ export default function Home() {
     "klassisch"
   );
   const [pandurTarget, setPandurTarget] = useState(PANDUR_DEFAULT_TARGET);
+  const [bieterPenalty, setBieterPenalty] = useState(BIETER_DEFAULT_PENALTY);
   const [joinCode, setJoinCode] = useState("");
   const [error, setError] = useState("");
   const [rulesMode, setRulesMode] = useState<GameMode | null>(null);
@@ -68,7 +71,17 @@ export default function Home() {
     const coiffeur = mode === "schieber" ? schieberCoiffeur : undefined;
     const stechen = mode === "custom" ? customVariant === "stechen" : undefined;
     const haerti = mode === "custom" ? customVariant === "haerti" : undefined;
-    getSocket().emit("room:create", { mode, name, targetScore, gstoert, coiffeur, stechen, haerti });
+    const penalty = mode === "bieter" ? bieterPenalty : undefined;
+    getSocket().emit("room:create", {
+      mode,
+      name,
+      targetScore,
+      gstoert,
+      coiffeur,
+      stechen,
+      haerti,
+      bieterPenalty: penalty,
+    });
   };
   const join = () => {
     setError("");
@@ -229,6 +242,24 @@ export default function Home() {
                     style={{ flex: 1 }}
                   >
                     {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {mode === "bieter" && (
+            <div>
+              <div style={{ marginBottom: 6 }}>Mitkommen-Strafpunkte (König passt)</div>
+              <div style={{ display: "flex", gap: 8 }}>
+                {BIETER_PENALTY_OPTIONS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={bieterPenalty === p ? "btn" : "btn btn-secondary"}
+                    onClick={() => setBieterPenalty(p)}
+                    style={{ flex: 1 }}
+                  >
+                    {p}
                   </button>
                 ))}
               </div>

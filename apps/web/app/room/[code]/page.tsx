@@ -622,8 +622,16 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
             !state.bieterKoenig && state.bieterOpen && state.bieterOpen.length > 0
               ? state.bieterOpen
               : null;
-          const cards = reveal ?? openOnly;
+          // Follow-up rounds have no exchange — show the single Bodentrumpf card instead.
+          const boden =
+            !reveal && !openOnly && state.bieterBodentrumpf ? [state.bieterBodentrumpf] : null;
+          const cards = reveal ?? openOnly ?? boden;
           if (!cards) return null;
+          const label = reveal
+            ? "Karten des Königs (Tausch)"
+            : openOnly
+              ? "Offene Karten (für den König)"
+              : "Bodentrumpf";
           return (
             <div
               style={{
@@ -639,11 +647,11 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
               }}
             >
               <div style={{ fontSize: 12, opacity: 0.75, color: "var(--gold-bright)" }}>
-                {reveal ? "Karten des Königs (Tausch)" : "Offene Karten (für den König)"}
+                {label}
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", maxWidth: "92vw" }}>
                 {cards.map((c) => (
-                  <CardFace key={`${c.suit}-${c.rank}`} card={c} width={56} />
+                  <CardFace key={`${c.suit}-${c.rank}`} card={c} width={92} />
                 ))}
               </div>
             </div>
@@ -658,7 +666,7 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
           <div
             style={{
               position: "fixed",
-              top: 52,
+              top: 84,
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 15,

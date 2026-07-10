@@ -134,6 +134,7 @@ export function registerHandlers(io: Server, socket: Socket): void {
       coiffeur,
       stechen,
       haerti,
+      bieterPenalty,
     }: {
       mode: GameMode;
       name: string;
@@ -142,6 +143,7 @@ export function registerHandlers(io: Server, socket: Socket): void {
       coiffeur?: boolean;
       stechen?: boolean;
       haerti?: boolean;
+      bieterPenalty?: number;
     }) => {
     if (!VALID_MODES.includes(mode)) return socket.emit("room:error", { message: "Ungültiger Spielmodus" });
     if (typeof name !== "string" || name.trim().length === 0) {
@@ -159,6 +161,9 @@ export function registerHandlers(io: Server, socket: Socket): void {
     }
     if (mode === "custom" && typeof haerti === "boolean") {
       room.state = { ...room.state, customHaerti: haerti };
+    }
+    if (mode === "bieter" && (bieterPenalty === 157 || bieterPenalty === 257)) {
+      room.state = { ...room.state, bieterMitkommenPenalty: bieterPenalty };
     }
     const hostId = room.hostId;
     bindSocket(room, hostId, socket.id);

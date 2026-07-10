@@ -1,5 +1,12 @@
 "use client";
-import { BIETER_PASS, encodeBieterTrump, legalBieterRaises, type Suit } from "@jassen/game-engine";
+import {
+  BIETER_MITKOMMEN,
+  BIETER_PASS,
+  BIETER_WEG,
+  encodeBieterTrump,
+  legalBieterRaises,
+  type Suit,
+} from "@jassen/game-engine";
 import type { ClientRoomState } from "@/lib/types";
 
 const SUITS: Suit[] = ["Rosen", "Eichel", "Schelle", "Schilten"];
@@ -14,6 +21,35 @@ export default function BieterBidPanel({
   onBid: (value: number) => void;
 }) {
   const nameOf = (id?: string) => state.players.find((p) => p.id === id)?.name ?? "?";
+
+  // Mitkommen decision (follow-up rounds): only the König answers.
+  if (state.bieterAwaitingMitkommen) {
+    if (myId !== state.bieterKoenig) {
+      return <div className="panel">Warte, ob der König mitkommt…</div>;
+    }
+    const penalty = state.bieterMitkommenPenalty ?? 157;
+    return (
+      <div className="panel" style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 340 }}>
+        <div style={{ fontWeight: 600 }}>Kommst du mit?</div>
+        <div style={{ fontSize: 13, opacity: 0.8 }}>
+          Passt du, erhalten die Bauern {penalty} Punkte (plus Stöck) und du gehst leer aus.
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button type="button" className="btn" onClick={() => onBid(BIETER_MITKOMMEN)} style={{ flex: 1 }}>
+            Mitkommen
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => onBid(BIETER_WEG)}
+            style={{ flex: 1 }}
+          >
+            Weg (passen)
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Trump sub-phase (round 1): only the König picks a suit.
   if (state.bieterAwaitingTrump) {
