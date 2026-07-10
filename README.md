@@ -131,3 +131,12 @@ ln -s /etc/nginx/sites-available/jassen.conf /etc/nginx/sites-enabled/
 nginx -t && systemctl restart nginx
 ````
 
+## ⚠️ Disclaimer
+
+This is a **personal hobby project** developed solely for educational and private testing purposes. 
+
+* **No Warranty:** The software, scripts, configuration templates, and documentation provided in this repository are provided "AS IS", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+* **Use At Your Own Risk:** In no event shall the authors or copyright holders be liable for any claim, damages, data loss, system downtime, security vulnerabilities, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+* **Not Production Ready:** This deployment is not intended for high-availability, critical infrastructure, or enterprise production environments. You are entirely responsible for securing, auditing, and maintaining your own containers, networks and environments.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
