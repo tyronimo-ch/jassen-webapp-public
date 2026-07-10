@@ -1,4 +1,4 @@
-# jassen-webapp-public
+# jassen-webapp-public [In active development]
 
 A browser-based Swiss Jass game with diffrent gamemodes:
 
