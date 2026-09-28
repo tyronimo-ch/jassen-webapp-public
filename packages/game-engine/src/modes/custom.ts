@@ -77,7 +77,8 @@ function topRankPlayers(trick: PlayedCard[]): string[] {
  * "Mit Stechen": no suit hierarchy. A rank tie starts an interactive Stechen — the tied
  * players each choose a card to play again (highest wins), everyone else discards one card
  * so hands stay equal. The trick is worth 1 + (number of Stechen rounds). If the tied
- * players have no cards left (last card), the first one wins (Erben, simplified).
+ * players have no cards left (last card), the first one wins outright for the normal
+ * 1 point (Erben, simplified) — no Stechen round was played, so no bonus applies.
  */
 
 /** Players (with cards) not in the Stechen owe one discard this round. */
@@ -258,9 +259,10 @@ export const customEngine: ModeEngine = {
           turnPlayerId: winnerId,
         };
       }
-      // Tie, but the tied players have no cards to play out the Stechen -> Erben (worth 2).
+      // Tie, but the tied players have no cards to play out the Stechen -> Erben.
+      // No Stechen round was actually played, so the trick is worth the normal 1 point.
       if (contenders.some((pid) => (state.hands[pid]?.length ?? 0) === 0)) {
-        return finishStechen(cleared, contenders[0], 1);
+        return finishStechen(cleared, contenders[0], 0);
       }
       return startStechenRound(cleared, contenders, 0);
     }
