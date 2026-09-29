@@ -79,7 +79,7 @@ describe("bieter", () => {
     expect(s.trumpMode).toBe("Schelle");
     expect(s.pendingDiscard).toEqual({ [king]: 6 });
     const toDiscard = s.hands[king].slice(0, 6);
-    for (const c of toDiscard) s = bieterEngine.discardCard(s, king, c);
+    for (const c of toDiscard) s = bieterEngine.discardCard!(s, king, c);
     expect(s.hands[king]).toHaveLength(10);
     expect(s.phase).toBe("playing");
     // The König leads the first trick in round 1.

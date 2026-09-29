@@ -98,7 +98,7 @@ apt-get install -y nodejs
 
 # Step 6: Rename the .env file
 ```
-mv /opt/jassen/apps/web/.env-example /opt/jassen/web/.env
+mv /opt/jassen/apps/web/.env-example /opt/jassen/apps/web/.env
 ```
 
 # Step 7: Edit the .env so it matches your enviroment
