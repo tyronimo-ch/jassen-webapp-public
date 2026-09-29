@@ -123,6 +123,43 @@ describe("custom / fuck your neighbour", () => {
     expect(resolved.tricksWon.p0).toBe(2);
   });
 
+  it("Mit Stechen: a tie on the last trick goes to the second-highest card", () => {
+    const state: RoomState = {
+      ...baseState(3),
+      customStechen: true,
+      phase: "playing",
+      currentTrick: [
+        { playerId: "p0", card: c("Rosen", "A") },
+        { playerId: "p1", card: c("Schilten", "A") }, // tie with p0, no cards left
+        { playerId: "p2", card: c("Eichel", "9") },
+      ],
+      hands: { p0: [], p1: [], p2: [] },
+      tricksWon: { p0: 0, p1: 0, p2: 0 },
+    };
+    const resolved = customEngine.resolveTrick(state);
+    expect(resolved.stechen).toBeUndefined();
+    expect(resolved.turnPlayerId).toBe("p2");
+    expect(resolved.tricksWon).toEqual({ p0: 0, p1: 0, p2: 1 });
+  });
+
+  it("Mit Stechen: last-trick tie skips further tied ranks to the next unique card", () => {
+    const state: RoomState = {
+      ...baseState(5),
+      customStechen: true,
+      phase: "playing",
+      currentTrick: [
+        { playerId: "p0", card: c("Rosen", "K") },
+        { playerId: "p1", card: c("Schilten", "K") },
+        { playerId: "p2", card: c("Eichel", "10") },
+        { playerId: "p3", card: c("Schelle", "10") },
+        { playerId: "p4", card: c("Rosen", "6") },
+      ],
+      hands: { p0: [], p1: [], p2: [], p3: [], p4: [] },
+      tricksWon: { p0: 0, p1: 0, p2: 0, p3: 0, p4: 0 },
+    };
+    expect(customEngine.resolveTrick(state).turnPlayerId).toBe("p4");
+  });
+
   it("reveals hands only in 1-card rounds", () => {
     expect(customEngine.dealRound({ ...baseState(4), roundIndex: 0 }).handsRevealed).toBe(true);
     expect(customEngine.dealRound({ ...baseState(4), roundIndex: 1 }).handsRevealed).toBe(false);

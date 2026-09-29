@@ -7,8 +7,8 @@ import Card from "./Card";
 import { CardBack, CardFan } from "./CardBack";
 import Hand from "./Hand";
 
-// Pull the table badge path from your environment variables
-const TABLE_BADGE_PATH = process.env.NEXT_PUBLIC_TABLE_BADGE_PATH || "";
+// Table badge path from env; falls back to the bundled default badge.
+const TABLE_BADGE_PATH = process.env.NEXT_PUBLIC_TABLE_BADGE_PATH || "/table/default-badge.svg";
 
 interface TableProps {
   state: ClientRoomState;
@@ -162,7 +162,7 @@ export default function Table({ state, myId, legal, onPlay, weisPrompt, handOver
 
       {/* Felt oval with opponents + trick */}
       <div className="felt">
-        {/* Center club badge — Only displays if a variable is assigned in your local configuration */}
+        {/* Center club badge — override via NEXT_PUBLIC_TABLE_BADGE_PATH */}
         {TABLE_BADGE_PATH && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={TABLE_BADGE_PATH} alt="Table Badge" className="table-badge" />

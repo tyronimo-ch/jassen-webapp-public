@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 864 1222" width="864" height="1222">
+  <path d="M432 40 L804 170 V620 C804 900 620 1080 432 1180 C244 1080 60 900 60 620 V170 Z"
+        fill="none" stroke="#f3e6c4" stroke-width="36" stroke-linejoin="round"/>
+  <path d="M432 110 L740 218 V620 C740 860 590 1010 432 1100 C274 1010 124 860 124 620 V218 Z"
+        fill="#f3e6c4" fill-opacity="0.12" stroke="#f3e6c4" stroke-width="10" stroke-linejoin="round"/>
+  <text x="432" y="560" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="210" font-weight="700" letter-spacing="12" fill="#f3e6c4">JASS</text>
+  <line x1="220" y1="630" x2="644" y2="630" stroke="#f3e6c4" stroke-width="10"/>
+  <g fill="#f3e6c4">
+    <circle cx="300" cy="780" r="46"/>
+    <circle cx="432" cy="780" r="46"/>
+    <circle cx="564" cy="780" r="46"/>
+    <circle cx="432" cy="920" r="46"/>
+  </g>
+</svg>

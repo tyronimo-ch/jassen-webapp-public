@@ -77,9 +77,23 @@ function topRankPlayers(trick: PlayedCard[]): string[] {
  * "Mit Stechen": no suit hierarchy. A rank tie starts an interactive Stechen — the tied
  * players each choose a card to play again (highest wins), everyone else discards one card
  * so hands stay equal. The trick is worth 1 + (number of Stechen rounds). If the tied
- * players have no cards left (last card), the first one wins outright for the normal
- * 1 point (Erben, simplified) — no Stechen round was played, so no bonus applies.
+ * players have no cards left (last trick), the tied cards cancel out and the next-highest
+ * card wins for the normal 1 point (see lastTrickWinner).
  */
+
+/**
+ * Last-trick tie: the top cards cancel each other out, so the highest card held by a
+ * single player wins (normally the second-highest rank). If every rank is tied, the
+ * first tied player keeps it (Erben).
+ */
+function lastTrickWinner(trick: PlayedCard[]): string {
+  const ranks = [...new Set(trick.map((pc) => obenabeValue(pc.card.rank)))].sort((a, b) => b - a);
+  for (const rank of ranks) {
+    const holders = trick.filter((pc) => obenabeValue(pc.card.rank) === rank);
+    if (holders.length === 1) return holders[0].playerId;
+  }
+  return topRankPlayers(trick)[0];
+}
 
 /** Players (with cards) not in the Stechen owe one discard this round. */
 function nonContenderDiscards(
@@ -259,10 +273,10 @@ export const customEngine: ModeEngine = {
           turnPlayerId: winnerId,
         };
       }
-      // Tie, but the tied players have no cards to play out the Stechen -> Erben.
-      // No Stechen round was actually played, so the trick is worth the normal 1 point.
+      // Tie, but no cards left to play out the Stechen -> the next-highest card wins.
+      // No Stechen round was played, so the trick is worth the normal 1 point.
       if (contenders.some((pid) => (state.hands[pid]?.length ?? 0) === 0)) {
-        return finishStechen(cleared, contenders[0], 0);
+        return finishStechen(cleared, lastTrickWinner(state.currentTrick), 0);
       }
       return startStechenRound(cleared, contenders, 0);
     }
