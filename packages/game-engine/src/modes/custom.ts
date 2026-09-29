@@ -148,9 +148,11 @@ function resolveStechenRoundFn(state: RoomState): RoomState {
   const winners = st.contenders.filter((pid) => value(pid) === maxRank);
   const rounds = st.rounds + 1;
   if (winners.length === 1) return finishStechen(state, winners[0], rounds);
-  // Tie again: another round, or Erben if the tied players are out of cards.
+  // Tie again: another round, or — if the tied players are out of cards — the
+  // next-highest Stechen card wins (same rule as a last-trick tie).
   if (winners.some((pid) => (state.hands[pid]?.length ?? 0) === 0)) {
-    return finishStechen(state, winners[0], rounds);
+    const stechenTrick = st.contenders.map((pid) => ({ playerId: pid, card: plays[pid] }));
+    return finishStechen(state, lastTrickWinner(stechenTrick), rounds);
   }
   return startStechenRound(state, winners, rounds);
 }
