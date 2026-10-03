@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { cardsPerPlayerFor, coiffeurDirection, isCoiffeur, type Card as CardType } from "@jassen/game-engine";
 import type { ClientRoomState } from "@/lib/types";
 import { ellipsePositions, useLayout } from "@/lib/useLayout";
@@ -7,8 +8,10 @@ import Card from "./Card";
 import { CardBack, CardFan } from "./CardBack";
 import Hand from "./Hand";
 
-// Table badge path from env; falls back to the bundled default badge.
-const TABLE_BADGE_PATH = process.env.NEXT_PUBLIC_TABLE_BADGE_PATH || "/table/default-badge.svg";
+// Table badge path from env; falls back to the bundled default badge when unset
+// or when the configured image fails to load (e.g. a path that 404s).
+const DEFAULT_TABLE_BADGE_PATH = "/table/default-badge.svg";
+const TABLE_BADGE_PATH = process.env.NEXT_PUBLIC_TABLE_BADGE_PATH || DEFAULT_TABLE_BADGE_PATH;
 
 interface TableProps {
   state: ClientRoomState;
@@ -58,6 +61,21 @@ function gameModeLabel(state: ClientRoomState): string {
   if (state.customStechen) return "Fuck Your Neighbour - Mit Stechen";
   if (state.customHaerti) return "Fuck Your Neighbour - Härte";
   return "Fuck Your Neighbour";
+}
+
+function TableBadge() {
+  const [src, setSrc] = useState(TABLE_BADGE_PATH);
+  const ref = useRef<HTMLImageElement>(null);
+  const fallback = () => setSrc((cur) => (cur === DEFAULT_TABLE_BADGE_PATH ? cur : DEFAULT_TABLE_BADGE_PATH));
+
+  // The server-rendered <img> can fail before hydration attaches onError, so check once on mount.
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) fallback();
+  }, []);
+
+  /* eslint-disable-next-line @next/next/no-img-element */
+  return <img ref={ref} src={src} alt="Table Badge" className="table-badge" onError={fallback} />;
 }
 
 export default function Table({ state, myId, legal, onPlay, weisPrompt, handOverride }: TableProps) {
@@ -163,10 +181,7 @@ export default function Table({ state, myId, legal, onPlay, weisPrompt, handOver
       {/* Felt oval with opponents + trick */}
       <div className="felt">
         {/* Center club badge — override via NEXT_PUBLIC_TABLE_BADGE_PATH */}
-        {TABLE_BADGE_PATH && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={TABLE_BADGE_PATH} alt="Table Badge" className="table-badge" />
-        )}
+        <TableBadge />
 
         {ordered.map((p, i) => {
           if (p.id === myId) return null;
